@@ -218,44 +218,67 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
 .open .intro { opacity: 0; }
 .open .final { opacity: 1; }
 
-/* ===================== MOBILE FIX ===================== */
-@media (max-width: 480px) {
+/* ===================== MOBILE FIX PRO ===================== */
+@media (max-width: 600px) {
 
-  .yay { font-size: 28px; }
+  body {
+    overflow-x: hidden;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .wrapper {
+    padding: 40px 0;
+  }
+
+  .yay {
+    font-size: 26px;
+  }
 
   .message {
-    font-size: 16px;
-    padding: 0 15px;
+    font-size: 15px;
+    padding: 0 20px;
   }
 
   .final {
-    font-size: 22px;
-    top: 6%;
-    padding: 0 15px;
+    font-size: 20px;
+    top: 4%;
+    padding: 0 20px;
   }
 
   .scene {
-    width: 95vw;
+    width: 92vw;
     max-width: 320px;
   }
 
   .heart {
-    width: 50px;
-    height: 45px;
+    width: 45px;
+    height: 40px;
+  }
+
+  /* STACK SIDE IMAGES UNDER MAIN PHOTO */
+  .side-images {
+    position: static;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-items: center;
   }
 
   .side {
-    width: 80px;
+    position: static;
+    width: 90px;
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
-  .side.left:nth-child(1)  { left: -90px; }
-  .side.left:nth-child(2)  { left: -110px; }
-  .side.left:nth-child(3)  { left: -90px; }
-
-  .side.right:nth-child(4) { right: -90px; }
-  .side.right:nth-child(5) { right: -110px; }
-  .side.right:nth-child(6) { right: -90px; }
+  .side.show {
+    opacity: 1;
+  }
 }
+
 </style>
 </head>
 
