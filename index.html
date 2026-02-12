@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Important Question</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at center, #ffd6e0 0%, #ff9eb5 50%, #e75480 100%);
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 120px;
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.15);
+  z-index: -1;
+}
+
+h1 { font-size: 36px; }
+h2 { font-size: 28px; }
+.name { color: #ff4b6e; }
+
+button {
+  font-size: 18px;
+  padding: 12px 24px;
+  min-width: 120px;
+  margin: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  background: #fff;
+}
+
+/* ===== FLOATING HEARTS ===== */
+.heart {
+  position: absolute;
+  animation: floatUp linear forwards;
+  cursor: pointer;
+  text-shadow: 0 0 8px rgba(255,215,0,0.9);
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-120vh); }
+}
+
+@keyframes balloonRise {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-180vh) scale(1.6); }
+}
+
+.balloon {
+  animation: balloonRise 4s ease-out forwards !important;
+}
+
+/* ===== LIGHTNING ===== */
+#flash {
+  position: fixed;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.flash-active {
+  animation: lightningFlash 0.3s ease;
+}
+
+@keyframes lightningFlash {
+  0% { opacity: 0; }
+  30% { opacity: 0.95; }
+  60% { opacity: 0.2; }
+  100% { opacity: 0; }
+}
+
+/* ===== SHAKE ===== */
+.shake {
+  animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+/* ===== CENTER ===== */
+.center-box {
+  position: relative;
+  display: inline-block;
+  padding: 40px 50px;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 20px 60px rgba(255,105,135,0.25);
+}
+
+.fade {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s ease;
+}
+
+.fade.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.title { transition-delay: 0.3s; }
+.subtitle { transition-delay: 0.8s; }
+.buttons { transition-delay: 1.3s; }
+
+/* ===== POPUP ===== */
+.popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 300px;
+}
+
+.popup-content img {
+  max-width: 220px;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="center-box" id="mainBox">
+  <h1 class="fade title">⚠️ Important Question ⚠️</h1>
+  <h2 class="fade subtitle">
+    Will you be my Valentine, <span class="name">Mabel</span>? ❤️
+  </h2>
+  <div class="btn-group fade buttons">
+    <button onclick="yesClicked()">Yes 💕</button>
+    <button onclick="noClicked()">No 🙈</button>
+  </div>
+</div>
+
+<div id="flash"></div>
+
+<!-- AUDIO FILES -->
+<audio id="heartbeatSound" preload="auto" loop>
+  <source src="heartbeat.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="bgMusic" preload="auto">
+  <source src="Thunder.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="thunderSound" preload="auto">
+  <source src="thunder.wav" type="audio/wav">
+</audio>
+
+<div class="popup" id="noPopup">
+  <div class="popup-content">
+    <h3>😌 I don’t take no for an answer</h3>
+    <img src="nope.png" alt="Nope">
+    <br><br>
+    <button onclick="closePopup()">Okay okay 🙈</button>
+  </div>
+</div>
+
+<script>
+const heartbeat = document.getElementById("heartbeatSound");
+const music = document.getElementById("bgMusic");
+const thunder = document.getElementById("thunderSound");
+
+/* ===== START HEARTBEAT ON PAGE LOAD ===== */
+heartbeat.volume = 0.3;
+heartbeat.play().catch(() => {
+  document.addEventListener("click", () => {
+    heartbeat.play().catch(() => {});
+  }, { once: true });
+});
+
+/* ===== YES CLICK EFFECT ===== */
+function yesClicked() {
+
+  heartbeat.pause();
+  heartbeat.currentTime = 0;
+
+  thunder.currentTime = 0;
+  thunder.volume = 1;
+  thunder.play().catch(() => {});
+
+  music.volume = 0.6;
+  music.loop = true;
+  music.play().catch(() => {});
+
+  const flash = document.getElementById("flash");
+  const mainBox = document.getElementById("mainBox");
+
+  const lightningInterval = setInterval(() => {
+    flash.classList.add("flash-active");
+    mainBox.classList.add("shake");
+
+    setTimeout(() => {
+      flash.classList.remove("flash-active");
+      mainBox.classList.remove("shake");
+    }, 300);
+  }, 400);
+
+  const balloonInterval = setInterval(() => {
+    for (let i = 0; i < 5; i++) {
+      const balloon = document.createElement("div");
+      balloon.className = "heart balloon";
+      balloon.innerHTML = "🎈";
+      balloon.style.left = Math.random() * 100 + "vw";
+      balloon.style.top = Math.random() * 100 + "vh";
+      balloon.style.fontSize = Math.random() * 35 + 28 + "px";
+      document.body.appendChild(balloon);
+      balloon.addEventListener("animationend", () => balloon.remove());
+    }
+  }, 300);
+
+  setTimeout(() => {
+    clearInterval(lightningInterval);
+    clearInterval(balloonInterval);
+    window.location.href = "yes.html";
+  }, 3500);
+}
+
+function noClicked() {
+  document.getElementById("noPopup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("noPopup").style.display = "none";
+}
+
+/* ===== FLOATING HEART SYSTEM ===== */
+
+const MAX_HEARTS = 40;
+
+function createHeart() {
+  if (document.querySelectorAll(".heart").length >= MAX_HEARTS) return;
+
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💛";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.top = Math.random() * 100 + "vh";
+  heart.style.fontSize = Math.random() * 24 + 22 + "px";
+  heart.style.animationDuration = 5 + Math.random() * 3 + "s";
+
+  heart.addEventListener("click", () => {
+    for (let i = 0; i < 4; i++) {
+      const balloon = document.createElement("div");
+      balloon.className = "heart balloon";
+      balloon.innerHTML = "🎈";
+      balloon.style.left = heart.style.left;
+      balloon.style.fontSize = Math.random() * 28 + 26 + "px";
+      document.body.appendChild(balloon);
+      balloon.addEventListener("animationend", () => balloon.remove());
+    }
+    heart.remove();
+  });
+
+  heart.addEventListener("animationend", () => heart.remove());
+
+  document.body.appendChild(heart);
+}
+
+for (let i = 0; i < 15; i++) createHeart();
+setInterval(createHeart, 500);
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".fade").forEach(el => el.classList.add("show"));
+});
+</script>
+
+</body>
+</html>
+

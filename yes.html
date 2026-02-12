@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Valentine ❤️</title>
+
+<style>
+/* ===================== BASE ===================== */
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  font-family: "Segoe UI", Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* ===================== FLOATING HEARTS ===================== */
+.hearts-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  width: 80px;
+  height: 72px;
+  background: #d4143a;
+  animation: floatUp linear infinite;
+
+  -webkit-mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'>\
+<path fill='white' d='M23.6,0c-3.4,0-6.4,2.2-7.6,5.3C14.8,2.2,11.8,0,8.4,0\
+C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/>\
+</svg>");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.heart img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(120vh) rotate(45deg); }
+  to   { transform: translateY(-30vh) rotate(45deg); }
+}
+
+/* ===================== CENTER ===================== */
+.wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===================== YAY INTRO ===================== */
+.intro {
+  text-align: center;
+  margin-bottom: 18px;
+  transition: opacity 0.8s ease;
+}
+
+.yay {
+  font-size: 44px;
+  color: #ff4b6e;
+}
+
+.message {
+  font-size: 20px;
+}
+
+/* ===================== FINAL HEADING (HIDDEN INITIALLY) ===================== */
+.final {
+  position: absolute;
+  top: 9%;
+  font-size: 36px;
+  color: #b22222;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+/* ===================== CARD SCENE ===================== */
+.scene {
+  position: relative;
+  width: 90vw;
+  max-width: 360px;
+  aspect-ratio: 3 / 4;
+  perspective: 2200px;
+}
+
+
+/* ===================== MAIN PHOTO ===================== */
+.photo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 1s ease 1.2s;
+  z-index: 2;
+}
+
+.photo img {
+  width: 88%;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+  transition: box-shadow 1s ease;
+}
+
+.open .photo img {
+  box-shadow:
+    0 25px 50px rgba(0,0,0,0.4),
+    0 0 60px rgba(255, 105, 135, 0.6);
+}
+
+
+/* ===================== SIDE IMAGES ===================== */
+.side-images {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.side {
+  position: absolute;
+  width: 120px;
+  border-radius: 18px;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all 0.6s ease;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.3);
+}
+
+/* LEFT */
+.side.left:nth-child(1) { left: -150px; top: 16%; }
+.side.left:nth-child(2) { left: -190px; top: 44%; }
+.side.left:nth-child(3) { left: -150px; top: 72%; }
+
+/* RIGHT */
+.side.right:nth-child(4) { right: -150px; top: 16%; }
+.side.right:nth-child(5) { right: -190px; top: 44%; }
+.side.right:nth-child(6) { right: -150px; top: 72%; }
+
+.side.show {
+  opacity: 1;
+  transform: scale(1);
+  animation: floatSide 3s ease-in-out infinite;
+}
+
+@keyframes floatSide {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1); }
+}
+
+/* ===================== CARD ===================== */
+.card {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  transition: opacity 1s ease 1s;
+}
+
+.half {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background-image: url("card-front.jpg");
+  background-size: 200% 100%;
+  border-radius: 22px;
+  backface-visibility: hidden;
+  transition: transform 1.8s cubic-bezier(.25,.8,.25,1);
+}
+
+.left  { left: 0;  background-position: left;  transform-origin: left; }
+.right { right: 0; background-position: right; transform-origin: right; }
+
+.open .left  { transform: rotateY(-150deg); }
+.open .right { transform: rotateY(150deg); }
+.open .card  { opacity: 0; }
+
+/* ===================== RIBBON ===================== */
+.ribbon {
+  position: absolute;
+  top: 58%;
+  left: 0;
+  width: 100%;
+  height: 44px;
+  background: linear-gradient(120deg,#c2183a,#ff4b6e,#ffd1dc,#ff4b6e,#c2183a);
+  background-size: 300% 100%;
+  animation: shimmer 2.5s infinite linear;
+  z-index: 5;
+  cursor: pointer;
+}
+@keyframes pulse {
+  0%,100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.05); }
+}
+
+@keyframes shimmer {
+  from { background-position: 0% 0; }
+  to { background-position: 300% 0; }
+}
+
+.bow {
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  cursor: pointer;
+}
+
+.bow span {
+  background: #c2183a;
+  color: white;
+  padding: 12px 26px;
+  border-radius: 30px;
+  font-weight: bold;
+}
+
+.open .ribbon,
+.open .bow { opacity: 0; }
+
+/* ===================== OPEN STATE ===================== */
+.open .photo { opacity: 1; }
+.open .intro { opacity: 0; }
+.open .final { opacity: 1; }
+</style>
+</head>
+
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+<audio id="bgMusic" src="us.mp3" preload="auto" loop></audio>
+
+<div class="wrapper" id="app">
+
+  <div class="intro">
+    <div class="yay">💖 Yay! 💖</div>
+    <div class="message">
+      Thank you for being my Valentine 💕<br>
+      Pretty sure you made a very good choice 😌
+    </div>
+  </div>
+
+  <div class="final">Happy Valentine’s Day, my love ❤️</div>
+
+  <div class="scene">
+    <div class="photo">
+      <img src="ourphoto.jpg">
+    </div>
+
+    <div class="side-images">
+      <img src="side1.jpg" class="side left">
+      <img src="side2.jpg" class="side left">
+      <img src="side3.jpg" class="side left">
+      <img src="side4.jpg" class="side right">
+      <img src="side5.jpg" class="side right">
+      <img src="side6.jpg" class="side right">
+    </div>
+
+    <div class="card">
+      <div class="half left"></div>
+      <div class="half right"></div>
+      <div class="ribbon" onclick="openCard()"></div>
+      <div class="bow" onclick="openCard()"><span>OPEN</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* MUSIC */
+window.addEventListener("DOMContentLoaded", () => {
+  const music = document.getElementById("bgMusic");
+  music.volume = 0.6;
+  music.play().catch(() => {
+    document.body.addEventListener("click", () => music.play(), { once:true });
+  });
+});
+
+/* OPEN CARD */
+function openCard() {
+  document.getElementById("app").classList.add("open");
+
+  // Wait exactly for card animation duration (1.8s)
+  setTimeout(() => {
+    document.querySelectorAll(".side").forEach((img, i) => {
+      setTimeout(() => img.classList.add("show"), i * 700);
+    });
+  }, 2000);
+}
+
+
+/* ===== OPTIMIZED FLOATING HEARTS ===== */
+
+const heartsBg = document.getElementById("heartsBg");
+const MAX_HEARTS = 25;
+
+function createFloatingHeart() {
+
+  if (heartsBg.children.length >= MAX_HEARTS) return;
+
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.animationDuration = 10 + Math.random() * 6 + "s";
+
+  const img = document.createElement("img");
+  img.src = "herface.jpg";
+  img.loading = "lazy";
+
+  h.appendChild(img);
+  heartsBg.appendChild(h);
+
+  setTimeout(() => h.remove(), 16000);
+}
+
+/* Initial burst */
+for (let i = 0; i < 10; i++) {
+  setTimeout(createFloatingHeart, i * 200);
+}
+
+/* Slower interval */
+setInterval(createFloatingHeart, 900);
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
