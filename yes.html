@@ -97,7 +97,7 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   perspective: 2200px;
 }
 
-/* ===================== PHOTO ===================== */
+/* ===================== MAIN PHOTO ===================== */
 .photo {
   position: absolute;
   inset: 0;
@@ -115,7 +115,7 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   box-shadow: 0 25px 50px rgba(0,0,0,0.4);
 }
 
-/* ===================== SIDE IMAGES ===================== */
+/* ===================== DESKTOP SIDE IMAGES ===================== */
 .side-images {
   position: absolute;
   inset: 0;
@@ -178,7 +178,6 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
 .open .right { transform: rotateY(150deg); }
 .open .card  { opacity: 0; }
 
-/* ===================== RIBBON ===================== */
 .ribbon {
   position: absolute;
   top: 58%;
@@ -218,37 +217,48 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
 .open .intro { opacity: 0; }
 .open .final { opacity: 1; }
 
-/* ===================== MOBILE FIX PRO ===================== */
+/* ===================== MOBILE VERSION ===================== */
+.mobile-top,
+.mobile-bottom {
+  display: none;
+}
+
 @media (max-width: 600px) {
 
-  body {
-    overflow-x: hidden;
-    height: auto;
-    min-height: 100vh;
-  }
-
-  .wrapper {
-    padding: 40px 0;
-  }
-
-  .yay {
-    font-size: 26px;
-  }
-
-  .message {
-    font-size: 15px;
-    padding: 0 20px;
-  }
-
-  .final {
-    font-size: 20px;
-    top: 4%;
-    padding: 0 20px;
-  }
-
   .scene {
-    width: 92vw;
-    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    perspective: none;
+  }
+
+  .side-images {
+    display: none;
+  }
+
+  .mobile-top,
+  .mobile-bottom {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .mobile-top img,
+  .mobile-bottom img {
+    width: 30%;
+    border-radius: 14px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  }
+
+  .photo {
+    position: relative;
+    opacity: 0;
+  }
+
+  .photo img {
+    width: 85%;
   }
 
   .heart {
@@ -256,29 +266,10 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
     height: 40px;
   }
 
-  /* STACK SIDE IMAGES UNDER MAIN PHOTO */
-  .side-images {
-    position: static;
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    justify-items: center;
-  }
-
-  .side {
-    position: static;
-    width: 90px;
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
-
-  .side.show {
-    opacity: 1;
-  }
+  .yay { font-size: 26px; }
+  .message { font-size: 15px; padding: 0 20px; }
+  .final { font-size: 20px; top: 4%; }
 }
-
 </style>
 </head>
 
@@ -300,10 +291,27 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   <div class="final">Happy Valentine’s Day, my love ❤️</div>
 
   <div class="scene">
+
+    <!-- MOBILE TOP 3 -->
+    <div class="mobile-top">
+      <img src="side1.jpg">
+      <img src="side2.jpg">
+      <img src="side3.jpg">
+    </div>
+
+    <!-- MAIN PHOTO -->
     <div class="photo">
       <img src="ourphoto.jpg">
     </div>
 
+    <!-- MOBILE BOTTOM 3 -->
+    <div class="mobile-bottom">
+      <img src="side4.jpg">
+      <img src="side5.jpg">
+      <img src="side6.jpg">
+    </div>
+
+    <!-- DESKTOP SIDE FLOATING -->
     <div class="side-images">
       <img src="side1.jpg" class="side left">
       <img src="side2.jpg" class="side left">
@@ -313,12 +321,14 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
       <img src="side6.jpg" class="side right">
     </div>
 
+    <!-- CARD -->
     <div class="card">
       <div class="half left"></div>
       <div class="half right"></div>
       <div class="ribbon" onclick="openCard()"></div>
       <div class="bow" onclick="openCard()"><span>OPEN</span></div>
     </div>
+
   </div>
 </div>
 
