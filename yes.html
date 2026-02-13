@@ -143,38 +143,62 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   opacity: 1;
 }
 
-/* ================= CARD ================= */
+/* ================= SCENE ================= */
 .scene {
   width: 320px;
   height: 420px;
   perspective: 2000px;
   position: relative;
+  overflow: hidden;
 }
 
-.card {
+/* ================= PHOTO (NOW VISIBLE FROM START) ================= */
+.photo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.photo img {
   width: 100%;
   height: 100%;
-  position: relative;
-  z-index: 2;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
 }
 
-.half {
+/* ================= CURTAIN STYLE CARD ================= */
+.card {
   position: absolute;
-  width: 100%;
-  height: 50%;
-  background: linear-gradient(135deg, #7b0f23, #b3122f);
-  border-radius: 18px;
-  backface-visibility: hidden;
-  transition: transform 1.6s cubic-bezier(.25,.8,.25,1);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  inset: 0;
+  z-index: 2;
+  display: flex;
 }
 
-.top    { top: 0; transform-origin: top; }
-.bottom { bottom: 0; transform-origin: bottom; }
+.curtain {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, #7b0f23, #b3122f);
+  transition: transform 2.5s cubic-bezier(.25,.8,.25,1);
+}
 
-.open .top    { transform: rotateX(-160deg); }
-.open .bottom { transform: rotateX(160deg); }
+.left {
+  transform-origin: left;
+}
 
+.right {
+  transform-origin: right;
+}
+
+.open .left {
+  transform: translateX(-100%);
+}
+
+.open .right {
+  transform: translateX(100%);
+}
+
+/* ================= OPEN BUTTON ================= */
 .open-btn {
   position: absolute;
   bottom: 45%;
@@ -195,26 +219,6 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
 .open-btn.fade-out {
   opacity: 0;
   pointer-events: none;
-}
-
-/* ================= PHOTO ================= */
-.photo {
-  position: absolute;
-  width: 300px;
-  opacity: 0;
-  transition: opacity 1.5s ease, transform 6s ease;
-  transform: scale(0.9);
-}
-
-.photo img {
-  width: 100%;
-  border-radius: 20px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-}
-
-.show-photo {
-  opacity: 1;
-  transform: scale(1);
 }
 
 /* ================= ANIMATIONS ================= */
@@ -257,13 +261,13 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   </div>
 
   <div class="scene">
-    <div class="photo" id="ourPhoto">
+    <div class="photo">
       <img src="ourphoto.jpg">
     </div>
 
     <div class="card">
-      <div class="half top"></div>
-      <div class="half bottom"></div>
+      <div class="curtain left"></div>
+      <div class="curtain right"></div>
       <button class="open-btn" id="openBtn" onclick="openCard()">OPEN</button>
     </div>
   </div>
@@ -314,12 +318,11 @@ function openCard(){
     document.getElementById("introHeading").classList.add("fade-out");
 
     setTimeout(() => {
-        document.getElementById("ourPhoto").classList.add("show-photo");
         document.getElementById("finalHeading").classList.add("show-final");
-    }, 1200);
+    }, 1700);
 }
 
-/* FLOATING ELEMENTS */
+/* FLOATING ELEMENTS (UNCHANGED) */
 const bg = document.getElementById("bgLayer");
 
 function createCircle(){
@@ -361,5 +364,4 @@ setInterval(createFaceHeart,2000);
 
 </body>
 </html>
-
 
