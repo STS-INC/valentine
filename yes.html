@@ -61,11 +61,7 @@ body {
   height: 75px;
   background: #d4143a;
   animation: floatUp linear infinite;
-  -webkit-mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'>\
-<path fill='white' d='M23.6,0c-3.4,0-6.4,2.2-7.6,5.3C14.8,2.2,11.8,0,8.4,0\
-C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/>\
-</svg>");
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'><path fill='white' d='M23.6,0c-3.4,0-6.4,2.2-7.6,5.3C14.8,2.2,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/></svg>");
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -94,19 +90,16 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   padding: 20px;
 }
 
-/* ================= INTRO HEADING ================= */
+/* ================= HEADINGS ================= */
 .heading {
   font-family: "Playfair Display", serif;
   text-align: center;
   max-width: 700px;
   margin-bottom: 40px;
-  color: #f5d6db;
   transition: opacity 0.8s ease;
 }
 
-.heading.fade-out {
-  opacity: 0;
-}
+.heading.fade-out { opacity: 0; }
 
 .heading .line1,
 .heading .line2 {
@@ -116,22 +109,13 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   transform: translateY(-30px);
 }
 
-.heading .line1 {
-  animation: fadeDown 1s ease forwards;
-}
-
-.heading .line2 {
-  animation: fadeDown 1s ease 0.6s forwards;
-}
+.heading .line1 { animation: fadeDown 1s ease forwards; }
+.heading .line2 { animation: fadeDown 1s ease 0.6s forwards; }
 
 @keyframes fadeDown {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ================= FINAL HEADING ================= */
 .final-heading {
   position: absolute;
   top: 6%;
@@ -143,21 +127,47 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   transition: opacity 1.2s ease;
 }
 
-.show-final {
-  opacity: 1;
-}
+.show-final { opacity: 1; }
 
 /* ================= SCENE ================= */
 .scene {
   position: relative;
   width: 340px;
-  height: 450px;
+  height: 510px;
   max-width: 90vw;
-  max-height: 70vh;
-  overflow: hidden;
+  perspective: 1200px;
 }
 
-/* ================= PHOTO ================= */
+
+/* FLASH */
+.flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.flash.active { animation: thunderFlash 0.4s ease; }
+
+@keyframes thunderFlash {
+  0% { opacity: 0; }
+  30% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+.scene.shake { animation: shake 0.4s ease; }
+
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(-6px,6px); }
+  50% { transform: translate(6px,-6px); }
+  75% { transform: translate(-4px,4px); }
+  100% { transform: translate(0,0); }
+}
+
+/* PHOTO */
 .photo {
   position: absolute;
   inset: 0;
@@ -169,10 +179,76 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   height: 100%;
   object-fit: cover;
   border-radius: 20px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  transition: opacity 0.8s ease;
 }
 
-/* ================= CURTAIN CARD ================= */
+/* CRACK GRID */
+.photo-crack {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  opacity: 0;
+  z-index: 6;
+  transition: opacity 0.8s ease, gap 0.8s ease;
+}
+
+.photo-crack.active {
+  opacity: 1;
+  gap: 6px;
+}
+
+/* TILE */
+.crack-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  text-align: center;
+  color: white;
+  padding: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background 0.6s ease, transform 0.6s ease;
+}
+
+.crack-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("ourphoto.jpg");
+  background-size: 200% 300%;
+  background-position: var(--xPos) var(--yPos);
+  filter: blur(14px) brightness(0.6);
+  transform: scale(1.1);
+  z-index: 1;
+  transition: opacity 0.6s ease;
+}
+
+.crack-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 2;
+  transition: opacity 0.6s ease;
+}
+
+.crack-tile span {
+  position: relative;
+  z-index: 3;
+}
+
+.crack-tile.revealed::before,
+.crack-tile.revealed::after {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* CURTAIN */
 .card {
   position: absolute;
   inset: 0;
@@ -192,8 +268,9 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
 
 .open .left  { transform: translateX(-100%); }
 .open .right { transform: translateX(100%); }
+.open .card { pointer-events: none; }
 
-/* ================= OPEN BUTTON ================= */
+/* BUTTON */
 .open-btn {
   position: absolute;
   bottom: 20px;
@@ -207,41 +284,44 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   cursor: pointer;
   background: linear-gradient(120deg, #ff4b6e, #ff758c);
   color: white;
-  box-shadow: 0 10px 25px rgba(255, 75, 110, 0.5);
+  z-index: 9;
   transition: opacity 0.6s ease;
-  z-index: 3;   /* 🔥 THIS FIXES IT */
 }
-
 
 .open-btn.fade-out {
   opacity: 0;
   pointer-events: none;
 }
+/* 3D FLIP */
+.flip-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s ease;
+}
 
-/* ================= MOBILE OPTIMIZATION ================= */
-@media(max-width:600px){
+.scene.flipped .flip-container {
+  transform: rotateY(180deg);
+}
 
-  .heading .line1,
-  .heading .line2 {
-    font-size: 20px;
-    line-height: 1.3;
-  }
+.front, .back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
 
-  .final-heading {
-    font-size: 24px;
-    top: 5%;
-  }
+.back {
+  transform: rotateY(180deg);
+}
 
-  .scene {
-    width: 85vw;
-    height: 65vh;
-  }
+/* Text fade */
+.crack-tile span {
+  transition: opacity 0.5s ease;
+}
 
-  .open-btn {
-    padding: 12px 28px;
-    font-size: 14px;
-  }
-
+.crack-tile.fade-text span {
+  opacity: 0;
 }
 
 </style>
@@ -249,8 +329,7 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
 <body>
 
 <div class="bg-layer" id="bgLayer"></div>
-
-<audio id="bgMusic" src="us.mp3" preload="auto" autoplay loop muted></audio>
+<audio id="bgMusic" src="us.mp3" preload="auto" loop></audio>
 
 <div class="wrapper" id="app">
 
@@ -264,108 +343,227 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   </div>
 
   <div class="scene">
-    <div class="photo">
-      <img src="ourphoto.jpg">
-    </div>
+    <div class="flip-container">
 
-    <div class="card">
-      <div class="curtain left"></div>
-      <div class="curtain right"></div>
-    </div>
+      <!-- FRONT (COLLAGE SIDE) -->
+      <div class="front">
 
-    <button class="open-btn" id="openBtn" onclick="openCard()">OPEN</button>
-  </div>
+        <div class="flash" id="flash"></div>
 
-</div>
+        <div class="photo">
+          <img src="ourphoto.jpg" id="mainPhoto">
+        </div>
+
+        <div class="photo-crack" id="photoCrack">
+          <div class="crack-tile"></div>
+          <div class="crack-tile"></div>
+          <div class="crack-tile"></div>
+          <div class="crack-tile"></div>
+          <div class="crack-tile"></div>
+          <div class="crack-tile"></div>
+        </div>
+
+        <div class="card">
+          <div class="curtain left"></div>
+          <div class="curtain right"></div>
+        </div>
+
+        <button class="open-btn" id="openBtn" onclick="openCard()">OPEN</button>
+
+      </div>
+
+      <!-- BACK (CLEAN ORIGINAL IMAGE) -->
+      <div class="back">
+        <div class="photo">
+          <img src="ourphoto.jpg">
+        </div>
+      </div>
+
+    </div> <!-- flip-container -->
+  </div> <!-- scene -->
+
+</div> <!-- wrapper -->
 
 <script>
+/* ================= FLOATING BACKGROUND ================= */
 
-/* MUSIC AUTOPLAY */
+const bgLayer = document.getElementById("bgLayer");
+
+function random(min, max){
+  return Math.random() * (max - min) + min;
+}
+
+function createFloatingElement(type){
+
+  const el = document.createElement("div");
+  el.className = type;
+
+  const size = random(20, 60);
+  const left = random(0, 100);
+  const duration = random(8, 18);
+  const delay = random(0, 5);
+
+  el.style.left = left + "vw";
+  el.style.animationDuration = duration + "s";
+  el.style.animationDelay = delay + "s";
+
+  if(type === "circle"){
+      el.style.width = size + "px";
+      el.style.height = size + "px";
+  }
+
+  if(type === "face-heart"){
+      const img = document.createElement("img");
+      img.src = "herface.jpg";   // your face image
+      el.appendChild(img);
+  }
+
+  bgLayer.appendChild(el);
+}
+
+/* Create floating elements */
+for(let i=0; i<10; i++) createFloatingElement("circle");
+for(let i=0; i<12; i++) createFloatingElement("reg-heart");
+for(let i=0; i<6; i++) createFloatingElement("face-heart");
+
 const music = document.getElementById("bgMusic");
+const crackTiles = document.querySelectorAll(".crack-tile");
+const photoCrack = document.getElementById("photoCrack");
+const mainPhoto = document.getElementById("mainPhoto");
+const scene = document.querySelector(".scene");
+const flash = document.getElementById("flash");
 
-window.addEventListener("DOMContentLoaded", () => {
+let revealedCount = 0;
+
+/* MUSIC */
+function startMusic(){
     music.volume = 0;
-    const playPromise = music.play();
+    music.play().then(()=>{
+        let v=0;
+        const fade=setInterval(()=>{
+            if(v<0.6){v+=0.05; music.volume=v;}
+            else clearInterval(fade);
+        },200);
+    });
+}
 
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            music.muted = false;
-            fadeInMusic();
-        }).catch(() => {
-            document.body.addEventListener("click", startMusicOnce, { once: true });
-        });
-    }
+/* TILE SETUP */
+const romanticLines = [
+  "You are my favorite forever.",
+  "With you, every moment feels magical.",
+  "You are my peace in chaos.",
+  "I fall for you more every day.",
+  "You are my sweetest adventure.",
+  "My heart chose you, always."
+];
+
+crackTiles.forEach((tile,index)=>{
+
+  const col = index % 2;
+  const row = Math.floor(index / 2);
+
+  const xPos = col === 0 ? "0%" : "100%";
+  const yPos = row === 0 ? "0%" : row === 1 ? "50%" : "100%";
+
+  tile.style.setProperty('--xPos', xPos);
+  tile.style.setProperty('--yPos', yPos);
+
+  const span = document.createElement("span");
+  span.innerText = romanticLines[index];
+  tile.appendChild(span);
+
+  tile.addEventListener("click", function(){
+
+    if (this.classList.contains("revealed")) return;
+
+    this.classList.add("fade-text");
+
+    setTimeout(()=>{
+        this.classList.add("revealed");
+
+        this.style.backgroundImage = `url("side${index+1}.jpg")`;
+        this.style.backgroundSize = "cover";
+        this.style.backgroundPosition = "center";
+
+        revealedCount++;
+
+        if(revealedCount === 6){
+            mergeTiles();
+        }
+
+    },500);
+
+  });
+
 });
 
-function startMusicOnce() {
-    music.muted = false;
-    music.play();
-    fadeInMusic();
+/* MERGE */
+function mergeTiles(){
+
+    setTimeout(()=>{
+        flash.classList.add("active");
+
+        setTimeout(()=>{
+            flash.classList.remove("active");
+
+            crackTiles.forEach(tile=>{
+                tile.style.transform = "translate(0,0)";
+            });
+
+            photoCrack.style.gap = "0px";
+
+        },300);
+
+    },800);
 }
 
-function fadeInMusic() {
-    let vol = 0;
-    const fade = setInterval(() => {
-        if (vol < 0.6) {
-            vol += 0.05;
-            music.volume = vol;
-        } else {
-            clearInterval(fade);
-        }
-    }, 200);
-}
+/* FLIP */
+scene.addEventListener("click", function(){
+    if(revealedCount < 6) return;
+    scene.classList.toggle("flipped");
+});
 
+/* OPEN CARD (UNCHANGED LOGIC) */
 function openCard(){
+
+
     document.getElementById("app").classList.add("open");
     document.getElementById("openBtn").classList.add("fade-out");
     document.getElementById("introHeading").classList.add("fade-out");
 
-    setTimeout(() => {
+    setTimeout(()=>{
         document.getElementById("finalHeading").classList.add("show-final");
-    }, 1700);
+
+        setTimeout(()=>{
+            flash.classList.add("active");
+            scene.classList.add("shake");
+
+            setTimeout(()=>{
+                flash.classList.remove("active");
+                scene.classList.remove("shake");
+
+                mainPhoto.style.opacity="0";
+                photoCrack.classList.add("active");
+
+                crackTiles.forEach((tile,i)=>{
+                    const offset=12;
+                    const dx=(i%2===0)?-offset:offset;
+                    const dy=(i<2)?-offset:(i<4?0:offset);
+                    tile.style.transform=`translate(${dx}px,${dy}px)`;
+                });
+
+            },300);
+
+        },4000);
+
+    },1700);
 }
-
-/* FLOATING ELEMENTS */
-const bg = document.getElementById("bgLayer");
-
-function createCircle(){
-  const c = document.createElement("div");
-  c.className="circle";
-  c.style.width = c.style.height = 10+Math.random()*80+"px";
-  c.style.left=Math.random()*100+"vw";
-  c.style.animationDuration=8+Math.random()*6+"s";
-  bg.appendChild(c);
-  setTimeout(()=>c.remove(),14000);
-}
-
-function createRegHeart(){
-  const h=document.createElement("div");
-  h.className="reg-heart";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=9+Math.random()*6+"s";
-  bg.appendChild(h);
-  setTimeout(()=>h.remove(),15000);
-}
-
-function createFaceHeart(){
-  const h=document.createElement("div");
-  h.className="face-heart";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=10+Math.random()*6+"s";
-  const img=document.createElement("img");
-  img.src="herface.jpg";
-  h.appendChild(img);
-  bg.appendChild(h);
-  setTimeout(()=>h.remove(),16000);
-}
-
-setInterval(createCircle,900);
-setInterval(createRegHeart,1500);
-setInterval(createFaceHeart,2000);
+/* AUTO START MUSIC WHEN PAGE LOADS */
+window.addEventListener("load", () => {
+    startMusic();
+});
 
 </script>
 
 </body>
 </html>
-
-
