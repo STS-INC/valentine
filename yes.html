@@ -8,7 +8,7 @@
 
 <style>
 
-/* =================== BASE =================== */
+/* ================= BASE ================= */
 body {
   margin: 0;
   height: 100vh;
@@ -18,7 +18,7 @@ body {
   color: #f8e6ea;
 }
 
-/* =================== BACKGROUND =================== */
+/* ================= BACKGROUND ================= */
 .bg-layer {
   position: fixed;
   inset: 0;
@@ -83,7 +83,7 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   to   { transform: translateY(-20vh); }
 }
 
-/* =================== CENTER =================== */
+/* ================= CENTER ================= */
 .wrapper {
   position: absolute;
   inset: 0;
@@ -93,51 +93,57 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   align-items: center;
 }
 
-/* =================== HEADING =================== */
+/* ================= INTRO HEADING ================= */
 .heading {
   font-family: "Playfair Display", serif;
+  text-align: center;
+  max-width: 640px;
+  margin-bottom: 50px;
+  color: #f5d6db;
+  transition: opacity 0.8s ease;
+}
+
+.heading.fade-out {
+  opacity: 0;
+}
+
+.heading .line1,
+.heading .line2 {
   font-size: 36px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  text-align: center;
-  max-width: 640px;
   line-height: 1.3;
-  margin-bottom: 50px;
-  color: #f5d6db;
-  text-shadow: 0 4px 20px rgba(255, 105, 135, 0.25);
-
   opacity: 0;
-  transform: translateY(-40px) scale(0.95);
-
-  animation: 
-    fadeDown 1.2s ease forwards,
-    popEffect 0.5s ease 1.2s forwards,
-    glowPulse 2.5s ease-in-out 2s infinite;
+  transform: translateY(-40px) scale(0.9);
 }
 
-@keyframes fadeDown {
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.heading .line1 {
+  animation:
+    fadeDown 1s ease forwards,
+    popEffect 0.4s ease 1s forwards;
 }
 
-@keyframes popEffect {
-  0%   { transform: translateY(0) scale(1); }
-  50%  { transform: translateY(0) scale(1.08); }
-  100% { transform: translateY(0) scale(1); }
+.heading .line2 {
+  animation:
+    fadeDown 1s ease 0.6s forwards,
+    popEffect 0.4s ease 1.6s forwards;
 }
 
-@keyframes glowPulse {
-  0%,100% {
-    text-shadow: 0 4px 20px rgba(255, 105, 135, 0.25);
-  }
-  50% {
-    text-shadow: 0 6px 30px rgba(255, 105, 135, 0.6);
-  }
+/* FINAL HEADING */
+.final-heading {
+  position: absolute;
+  top: 8%;
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  opacity: 0;
+  transition: opacity 1.2s ease;
 }
 
-/* =================== CARD =================== */
+.show-final {
+  opacity: 1;
+}
+
+/* ================= CARD ================= */
 .scene {
   width: 320px;
   height: 420px;
@@ -149,6 +155,7 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   width: 100%;
   height: 100%;
   position: relative;
+  z-index: 2;
 }
 
 .half {
@@ -182,16 +189,51 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
   background: linear-gradient(120deg, #ff4b6e, #ff758c);
   color: white;
   box-shadow: 0 10px 25px rgba(255, 75, 110, 0.5);
-  transition: 0.3s ease;
+  transition: 0.4s ease;
 }
 
-.open-btn:hover {
-  transform: translate(-50%, 50%) scale(1.08);
+.open-btn.fade-out {
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Responsive */
+/* ================= PHOTO ================= */
+.photo {
+  position: absolute;
+  width: 300px;
+  opacity: 0;
+  transition: opacity 1.5s ease, transform 6s ease;
+  transform: scale(0.9);
+}
+
+.photo img {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.show-photo {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeDown {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes popEffect {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
 @media(max-width:600px){
-  .heading { font-size: 22px; padding:0 20px; }
+  .heading .line1,
+  .heading .line2 { font-size: 22px; padding:0 20px; }
   .scene { width: 260px; height: 360px; }
 }
 
@@ -204,35 +246,43 @@ C3.8,0,0,3.8,0,8.4c0,9.3,16,20.6,16,20.6s16-11.3,16-20.6C32,3.8,28.2,0,23.6,0z'/
 <audio id="bgMusic" src="us.mp3" preload="auto" autoplay loop muted></audio>
 
 <div class="wrapper" id="app">
-  <div class="heading">
-    Yay! Thanks for choosing me 💖<br>
-    I’m sure you made the right choice 😉
+
+  <div class="heading" id="introHeading">
+    <div class="line1">Yay! Thanks for choosing me 💖</div>
+    <div class="line2">I’m sure you made the right choice 😉</div>
+  </div>
+
+  <div class="final-heading" id="finalHeading">
+    Happy Valentine’s Day, my love ❤️
   </div>
 
   <div class="scene">
+    <div class="photo" id="ourPhoto">
+      <img src="ourphoto.jpg">
+    </div>
+
     <div class="card">
       <div class="half top"></div>
       <div class="half bottom"></div>
-      <button class="open-btn" onclick="openCard()">OPEN</button>
+      <button class="open-btn" id="openBtn" onclick="openCard()">OPEN</button>
     </div>
   </div>
+
 </div>
 
 <script>
 
+/* MUSIC */
 const music = document.getElementById("bgMusic");
-
 window.addEventListener("DOMContentLoaded", () => {
     music.volume = 0;
     const playPromise = music.play();
-
     if (playPromise !== undefined) {
         playPromise.then(() => {
             music.muted = false;
             fadeInMusic();
         }).catch(() => {
             document.body.addEventListener("click", startMusicOnce, { once: true });
-            document.body.addEventListener("touchstart", startMusicOnce, { once: true });
         });
     }
 });
@@ -255,11 +305,21 @@ function fadeInMusic() {
     }, 200);
 }
 
+/* OPEN CARD SEQUENCE */
 function openCard(){
+
     document.getElementById("app").classList.add("open");
+
+    document.getElementById("openBtn").classList.add("fade-out");
+    document.getElementById("introHeading").classList.add("fade-out");
+
+    setTimeout(() => {
+        document.getElementById("ourPhoto").classList.add("show-photo");
+        document.getElementById("finalHeading").classList.add("show-final");
+    }, 1200);
 }
 
-/* Floating background elements */
+/* FLOATING ELEMENTS */
 const bg = document.getElementById("bgLayer");
 
 function createCircle(){
@@ -301,4 +361,5 @@ setInterval(createFaceHeart,2000);
 
 </body>
 </html>
+
 
